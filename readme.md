@@ -1,7 +1,5 @@
 # Barrier-free kiosk 강의자료 및 prototype
 
----
-
 ## 개발환경 세팅 방법
 
 - git clone 후, Anaconda prompt로 해당 폴더 경로에서 conda env create -f codi-kiosk.yaml 명령어를 실행하면 개발환경이 세팅됩니다.
