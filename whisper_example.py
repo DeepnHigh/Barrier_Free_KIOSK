@@ -5,6 +5,7 @@ import tempfile
 import os
 import pyttsx3
 import torch
+os.environ["PATH"] += os.pathsep + r"C:\ffmpeg\bin"
 
 print(torch.cuda.is_available())
 # Whisper 모델 로딩 (성능 중요하면 "medium" 추천)
