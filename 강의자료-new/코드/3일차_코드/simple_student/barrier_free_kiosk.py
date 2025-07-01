@@ -20,7 +20,7 @@ SAMPLERATE = 16000
 DURATION = 3
 
 
-def ask(question, message_history=[], model="o4-mini-2025-04-16"):
+def ask(question, message_history=[], model="gpt-3.5-turbo"):
     """
     만들어 보세요!
     """

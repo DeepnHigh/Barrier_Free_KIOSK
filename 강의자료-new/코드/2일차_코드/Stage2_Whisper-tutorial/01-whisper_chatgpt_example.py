@@ -71,7 +71,7 @@ def transcribe(audio_data):
     return transcript.text
 
 
-def ask(question, message_history=[], model="o4-mini-2025-04-16"):
+def ask(question, message_history=[], model="gpt-3.5-turbo"):
     if len(message_history) == 0:
         # 최초 질문
         message_history.append(
