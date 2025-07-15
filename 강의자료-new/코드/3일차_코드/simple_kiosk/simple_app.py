@@ -28,7 +28,7 @@ def run_accessibility_mode():
     st.write("음성 인식 모드가 활성화되었습니다.")
 
     # whisper.py 실행
-    os.system("python whisper_chatgpt_simple.py")
+    os.system("python barrier_free_kiosk.py")
 
 
 def show_cart():
