@@ -4,7 +4,8 @@ import sounddevice as sd
 import scipy.io.wavfile as wav
 import tempfile
 import os
-from playsound import playsound  # mp3 재생용
+from playsound import playsound # mp3 재생용
+import uuid # For generating unique filenames
 
 os.environ["OPENAI_API_KEY"] = (
     ""
@@ -21,9 +22,8 @@ initial_prompt1 = """
     
     ### 주의사항
     질문은 하나씩 해주세요.
-    이모티콘은 사용하지 마세요  
+    이모티콘은 사용하지 마세요 
 """
-
 
 # TTS로 음성 생성 및 재생
 def speak(text):
@@ -33,13 +33,23 @@ def speak(text):
         voice="shimmer",
         input=text,
     )
-    with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as audio_file:
-        audio_file.write(response.content)
-        audio_file.flush()
-        audio_path = audio_file.name
+    
+    # Generate a unique filename in the current working directory
+    # This avoids potential issues with long or complex tempfile paths
+    unique_filename = f"temp_audio_{uuid.uuid4().hex}.mp3"
+    audio_path = os.path.join(os.getcwd(), unique_filename)
 
-    playsound(audio_path)
-    os.remove(audio_path)
+    try:
+        with open(audio_path, "wb") as audio_file:
+            audio_file.write(response.content)
+        
+        playsound(audio_path)
+    except Exception as e:
+        print(f"Error playing audio with playsound: {e}")
+        print("Please check if the path is valid and if an appropriate MP3 player is associated with .mp3 files.")
+    finally:
+        if os.path.exists(audio_path):
+            os.remove(audio_path) # Clean up the temporary file
 
 
 # 음성 녹음
@@ -58,6 +68,7 @@ def record_audio():
 
 # Whisper API 호출 (최신 openai>=1.0.0 방식)
 def transcribe(audio_data):
+    # Using tempfile for recording is generally safer as playsound isn't involved
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_wav:
         wav.write(temp_wav.name, SAMPLERATE, audio_data)
         temp_wav_path = temp_wav.name

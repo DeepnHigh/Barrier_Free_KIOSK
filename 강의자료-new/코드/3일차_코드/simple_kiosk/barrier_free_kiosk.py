@@ -4,7 +4,8 @@ import sounddevice as sd
 import scipy.io.wavfile as wav
 import tempfile
 import os
-from playsound import playsound  # mp3 재생용
+from playsound import playsound # mp3 재생용
+import uuid # For generating unique filenames
 
 # OpenAI API
 os.environ["OPENAI_API_KEY"] = ""
