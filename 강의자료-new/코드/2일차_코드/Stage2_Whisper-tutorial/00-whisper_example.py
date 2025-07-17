@@ -59,38 +59,20 @@ def transcribe(audio_data):
 
 # TTS로 음성 생성 및 재생
 def speak(text):
-    """
-    입력된 텍스트를 TTS로 음성 파일로 변환하고 재생합니다.
-    입력: text (str, 음성으로 변환할 텍스트)
-    출력: 없음
-    동작:
-        - OpenAI TTS API를 사용해 텍스트를 mp3 음성으로 변환합니다.
-        - 임시 mp3 파일로 저장 후 재생합니다.
-        - 재생이 끝나면 임시 파일을 삭제합니다.
-    """
     print(f"🗣️ speak(): {text}")
     response = openai.audio.speech.create(
         model="tts-1",
         voice="shimmer",
+        # ["alloy", "ash", "coral", "echo", "fable", "onyx", "nova", "sage", "shimmer", "verse"] 가능
         input=text,
     )
-    
-    # Generate a unique filename in the current working directory
-    # This avoids potential issues with long or complex tempfile paths
-    unique_filename = f"temp_audio_{uuid.uuid4().hex}.mp3"
-    audio_path = os.path.join(os.getcwd(), unique_filename)
+    with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as audio_file:
+        audio_file.write(response.content)
+        audio_file.flush()
+        audio_path = audio_file.name
 
-    try:
-        with open(audio_path, "wb") as audio_file:
-            audio_file.write(response.content)
-        
-        playsound(audio_path)
-    except Exception as e:
-        print(f"Error playing audio with playsound: {e}")
-        print("Please check if the path is valid and if an appropriate MP3 player is associated with .mp3 files.")
-    finally:
-        if os.path.exists(audio_path):
-            os.remove(audio_path) # Clean up the temporary file
+    playsound(audio_path)
+    os.remove(audio_path)
 
 # 대화 흐름을 관리하는 메인 함수
 def main():
