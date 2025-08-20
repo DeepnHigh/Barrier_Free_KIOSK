@@ -1,7 +1,10 @@
-from dotenv import load_dotenv
 from openai import OpenAI
+import os
 
-load_dotenv(dotenv_path="./.env")
+os.environ["OPENAI_API_KEY"] = (
+    ""
+)
+
 client = OpenAI()
 
 initial_prompt = """

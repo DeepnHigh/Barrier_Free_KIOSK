@@ -1,10 +1,11 @@
-# 토큰 정보로드를 위한 라이브러리
-# 설치: pip install python-dotenv
-from dotenv import load_dotenv
+import os
 from openai import OpenAI
 
-# 토큰 정보로드
-load_dotenv(dotenv_path="./.env")
+
+os.environ["OPENAI_API_KEY"] = (
+    ""
+)
+
 client = OpenAI()
 completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
